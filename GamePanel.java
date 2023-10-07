@@ -14,7 +14,8 @@ public class GamePanel extends JPanel implements Runnable {
     public final int SCREEN_HEIGHT = tileSize * maxScreenRow; // 576 pixels
 
     // FPS
-    int FPS = 16;
+
+    int FPS = 16; // 16 milliseconds = 60 FPS
 
     //BALL
     int ballWidth = 32;
@@ -64,7 +65,6 @@ public class GamePanel extends JPanel implements Runnable {
         while (gameThread != null) {
             update();
             repaint();
-            // Pause the game loop for 16 milliseconds to regulate the frame rate
             try {
                 Thread.sleep(FPS);
             } catch (InterruptedException e) {
@@ -81,35 +81,26 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     private void ballSimulation() {
-        // Update the ball's position based on its current speed in both X and Y directions
         ballX += ballSpeedX;
         ballY += ballSpeedY;
 
-        // Check for collisions with the screen boundaries
         if (ballX < 0) {
-            // Ball hit the left wall, reset its position and change horizontal direction
             ballX = 0;
-            ballSpeedX = -ballSpeedX; // Reverse the horizontal direction
+            ballSpeedX = -ballSpeedX;
         } else if (ballX + ballWidth > SCREEN_WIDTH) {
-            // Ball hit the right wall, reset its position and change horizontal direction
             ballX = SCREEN_WIDTH - ballWidth;
-            ballSpeedX = -ballSpeedX; // Reverse the horizontal direction
+            ballSpeedX = -ballSpeedX;
         }
 
         if (ballY < 0) {
-            // Ball hit the top wall, reset its position and change vertical direction
             ballY = 0;
-            ballSpeedY = -ballSpeedY; // Reverse the vertical direction
+            ballSpeedY = -ballSpeedY;
         } else if (ballY + ballHeight > SCREEN_HEIGHT) {
-            // Ball hit the bottom wall, reset its position and change vertical direction
             ballY = SCREEN_HEIGHT - ballHeight;
-            ballSpeedY = -ballSpeedY; // Reverse the vertical direction
+            ballSpeedY = -ballSpeedY;
         }
 
-        // You can add more collision detection logic here, such as collision with paddles.
     }
-
-
 
     private void paddleCollision() {
 

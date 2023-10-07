@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 public class GamePanel extends JPanel implements Runnable {
     //SCREEN SETTINGS
@@ -22,7 +23,8 @@ public class GamePanel extends JPanel implements Runnable {
     int ballX = SCREEN_WIDTH/2 - ballWidth/2;
     int ballY = SCREEN_HEIGHT/2 - ballHeight/2;
 
-    int ballSpeed = 2;
+    int ballSpeedX = 4;
+    int ballSpeedY = 4;
 
     //PLAYERS
     int paddleWidth = 16;
@@ -79,30 +81,34 @@ public class GamePanel extends JPanel implements Runnable {
 
 
     private void ballSimulation() {
-        
-        //BALL POSITION X-AXIS
-        if (ballX <= 0) {
-            ballSpeed = 2;
-            ballX += ballSpeed;
-        }
-        if (ballX >= SCREEN_WIDTH - ballWidth) {
-            ballSpeed = -2;
-            ballX += ballSpeed;
-        } 
+        // Update the ball's position based on its current speed in both X and Y directions
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
 
-        //BALL POSITION Y-AXIS
-        if (ballY <= 0) {
-            ballSpeed = 2;
-            ballY += ballSpeed;
+        // Check for collisions with the screen boundaries
+        if (ballX < 0) {
+            // Ball hit the left wall, reset its position and change horizontal direction
+            ballX = 0;
+            ballSpeedX = -ballSpeedX; // Reverse the horizontal direction
+        } else if (ballX + ballWidth > SCREEN_WIDTH) {
+            // Ball hit the right wall, reset its position and change horizontal direction
+            ballX = SCREEN_WIDTH - ballWidth;
+            ballSpeedX = -ballSpeedX; // Reverse the horizontal direction
         }
-        if (ballY >= SCREEN_HEIGHT - ballHeight) {
-            ballSpeed = -2;
-            ballY += ballSpeed;
-        } 
 
-        ballX += ballSpeed;
-        ballY += ballSpeed;
+        if (ballY < 0) {
+            // Ball hit the top wall, reset its position and change vertical direction
+            ballY = 0;
+            ballSpeedY = -ballSpeedY; // Reverse the vertical direction
+        } else if (ballY + ballHeight > SCREEN_HEIGHT) {
+            // Ball hit the bottom wall, reset its position and change vertical direction
+            ballY = SCREEN_HEIGHT - ballHeight;
+            ballSpeedY = -ballSpeedY; // Reverse the vertical direction
+        }
+
+        // You can add more collision detection logic here, such as collision with paddles.
     }
+
 
 
     private void paddleCollision() {
